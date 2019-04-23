@@ -1,0 +1,54 @@
+#!/bin/bash
+set -e
+
+help() {
+    printf "usage: ./generate host user hostname [port]\\n"
+    printf "where:\\n"
+    printf "host is the human-readable name you want to give this ssh host\\n"
+    printf "user is the username you have on this host\\n"
+    printf "hostname is the hostname (ip or domain) of the host\\n"
+    printf "and optionally, port is the port of the host\\n"
+}
+
+if [ -z "$1" ] ; then
+    printf "you need to provide a host!\\n"
+    help
+    exit 1
+fi
+
+if [ -z "$2" ] ; then
+    printf "you need to provide a username!\\n"
+    help
+    exit 1
+fi
+
+if [ -z "$3" ] ; then
+    printf "you need to provide a hostname!\\n"
+    help
+    exit 1
+fi
+
+HOST=$1
+USER=$2
+HOSTNAME=$3
+PORT=${4+"22"}
+
+# generate password, add to password manager
+pass generate "SSH/${HOST}" 40 > /dev/null
+
+# generate key
+ssh-keygen -t ed25519 -f "$HOME/.ssh/${HOST}" -N "$(pass "SSH/${HOST}")" > /dev/null 2>&1
+
+# add ~/.ssh/config entry
+cat << EOF >> ~/.ssh/config
+Host ${HOST}
+    User ${USER}
+    HostName ${HOSTNAME}
+    Port ${PORT}
+    IdentityFile ~/.ssh/${HOST}
+
+EOF
+
+printf "key has been generated and added to ~/.ssh/config for %s!\\n" "${HOST}"
+printf "you now may add custom config to ~/.ssh/config.\\n"
+printf "now add the keyfile to authorized_keys or whatever.\\n"

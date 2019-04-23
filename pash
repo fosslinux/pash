@@ -1,0 +1,24 @@
+#!/bin/bash
+
+help() {
+    printf "usage: ./ssh host\\n"
+    printf "where host is a host you have generated with the generate\\n"
+    printf "script in this same repository.\\n"
+}
+
+if [ -z "$1" ] ; then
+    printf "please provide a host!\\n"
+    help
+fi
+
+HOST=$1
+PASSWORD=$(pass "SSH/${HOST}")
+PASSWORD=$(perl -e 'print quotemeta shift(@ARGV)' "${PASSWORD}")
+
+# sleep 0.1 is needed otherwise there is a race condition
+expect << EOF > /dev/null
+spawn ssh-add ${HOME}/.ssh/${HOST}
+sleep 0.1
+send "${PASSWORD}\n"
+expect eof
+EOF
