@@ -2,12 +2,12 @@
 set -e
 
 help() {
-    printf "usage: ./generate host user hostname [port]\\n"
+    printf "usage: ./generate host user hostname port\\n"
     printf "where:\\n"
     printf "host is the human-readable name you want to give this ssh host\\n"
     printf "user is the username you have on this host\\n"
     printf "hostname is the hostname (ip or domain) of the host\\n"
-    printf "and optionally, port is the port of the host\\n"
+    printf "and port is the port of the host\\n"
 }
 
 if [ -z "$1" ] ; then
@@ -28,10 +28,16 @@ if [ -z "$3" ] ; then
     exit 1
 fi
 
+if [ -z "$4" ] ; then
+    printf "you need to provide a port!\\n"
+    help
+    exit 1
+fi
+
 HOST=$1
 USER=$2
 HOSTNAME=$3
-PORT=${4+"22"}
+PORT=$4
 
 # generate password, add to password manager
 pass generate "SSH/${HOST}" 40 > /dev/null
