@@ -1,35 +1,34 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 help() {
-    printf "usage: ./generate host user hostname port\\n"
-    printf "where:\\n"
-    printf "host is the human-readable name you want to give this ssh host\\n"
-    printf "user is the username you have on this host\\n"
-    printf "hostname is the hostname (ip or domain) of the host\\n"
-    printf "and port is the port of the host\\n"
+    printf "Usage: ./generate host user hostname port\\n"
+    printf "Host: human-readable name you want to give this ssh host\\n"
+    printf "User: username you have on this host\\n"
+    printf "Hostname: hostname (ip or domain) of the host\\n"
+    printf "Port: port SSH is on\\n"
 }
 
 if [ -z "$1" ] ; then
-    printf "you need to provide a host!\\n"
+    printf "Please provide a host!\\n"
     help
     exit 1
 fi
 
 if [ -z "$2" ] ; then
-    printf "you need to provide a username!\\n"
+    printf "Please provide a username!\\n"
     help
     exit 1
 fi
 
 if [ -z "$3" ] ; then
-    printf "you need to provide a hostname!\\n"
+    printf "Please provide a hostname!\\n"
     help
     exit 1
 fi
 
 if [ -z "$4" ] ; then
-    printf "you need to provide a port!\\n"
+    printf "Please provide a port!\\n"
     help
     exit 1
 fi
@@ -55,6 +54,4 @@ Host ${HOST}
 
 EOF
 
-printf "key has been generated and added to ~/.ssh/config for %s!\\n" "${HOST}"
-printf "you now may add custom config to ~/.ssh/config.\\n"
-printf "now add the keyfile to authorized_keys or whatever.\\n"
+printf "Key has been generated and added to ~/.ssh/config for %s.\\n" "${HOST}"
