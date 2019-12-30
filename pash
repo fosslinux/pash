@@ -1,13 +1,13 @@
 #!/bin/bash
 
 help() {
-    printf "usage: ./ssh host\\n"
-    printf "where host is a host you have generated with the generate\\n"
+    printf "Usage: %s host\\n" "$0"
+    printf "Host: host you have generated with the generate\\n"
     printf "script in this same repository.\\n"
 }
 
 if [ -z "$1" ] ; then
-    printf "please provide a host!\\n"
+    printf "Please provide a host!\\n"
     help
 fi
 

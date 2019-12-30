@@ -2,7 +2,7 @@
 set -e
 
 help() {
-    printf "Usage: ./generate host user hostname port\\n"
+    printf "Usage: %s host user hostname port\\n" "$0"
     printf "Host: human-readable name you want to give this ssh host\\n"
     printf "User: username you have on this host\\n"
     printf "Hostname: hostname (ip or domain) of the host\\n"
